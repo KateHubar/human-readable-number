@@ -1,4 +1,5 @@
 module.exports = function toReadable(number) {
+    if (number > 999) return "overflow";
     const firstOrderNums = {
         0: "zero",
         1: "one",
@@ -21,9 +22,6 @@ module.exports = function toReadable(number) {
         18: "eighteen",
         19: "nineteen",
     };
-
-    if (number < 20) return firstOrderNums[number];
-    const numStr = number.toString();
     const secondOrderNums = {
         2: "twenty",
         3: "thirty",
@@ -34,11 +32,21 @@ module.exports = function toReadable(number) {
         8: "eighty",
         9: "ninety",
     };
-    if (numStr.length === 2) {
-        if (numStr[1] == 0) return secondOrderNums[numStr[0]];
 
-        return `${secondOrderNums[numStr[0]]} ${firstOrderNums[numStr[1]]}`;
+    const numStr = number.toString();
+    function getSecondOrderNumberName(num) {
+        if (num < 20) return firstOrderNums[num];
+        if (num[1] == 0) return secondOrderNums[num[0]];
+        return `${secondOrderNums[num[0]]} ${firstOrderNums[num[1]]}`;
     }
 
-    return "";
+    if (numStr.length <= 2) {
+        return getSecondOrderNumberName(numStr);
+    }
+
+    return `${firstOrderNums[numStr[0]]} hundred ${
+        numStr[1] == 0 && numStr[2] == 0
+            ? ""
+            : getSecondOrderNumberName((+numStr.substring(1, 3)).toString())
+    }`;
 };
