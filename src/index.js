@@ -44,9 +44,10 @@ module.exports = function toReadable(number) {
         return getSecondOrderNumberName(numStr);
     }
 
-    return `${firstOrderNums[numStr[0]]} hundred ${
+    return `${firstOrderNums[numStr[0]]} hundred${
         numStr[1] == 0 && numStr[2] == 0
             ? ""
-            : getSecondOrderNumberName((+numStr.substring(1, 3)).toString())
+            : " " +
+              getSecondOrderNumberName((+numStr.substring(1, 3)).toString())
     }`;
 };
